@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net7.0</TargetFramework>
+    <RootNamespace>csharp_host</RootNamespace>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <NativeOutputPath>../rust-lib/target/$(Configuration.ToLowerInvariant())/</NativeOutputPath>
+  </PropertyGroup>
+
+<ItemGroup>
+    <None Condition="$([MSBuild]::IsOsPlatform('MacOS'))" Include="$(NativeOutputPath)librust_lib.dylib" CopyToOutputDirectory="PreserveNewest" />
+    <None Condition="$([MSBuild]::IsOsPlatform('Linux'))" Include="$(NativeOutputPath)librust_lib.so" CopyToOutputDirectory="PreserveNewest" />
+    <None Condition="$([MSBuild]::IsOsPlatform('Windows'))" Include="$(NativeOutputPath)rust_lib.dll" CopyToOutputDirectory="PreserveNewest" />
+</ItemGroup>
+
+<ItemGroup>
+  <Compile Include="..\rust-lib\bindings\rust_lib.cs" Link="rust_lib.cs" />
+</ItemGroup>
+
+</Project>

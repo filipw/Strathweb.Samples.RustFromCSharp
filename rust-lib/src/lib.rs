@@ -1,15 +1,37 @@
 uniffi::include_scaffolding!("rust-lib");
 
-use qrcodegen::{QrCode, QrCodeEcc};
+use std::sync::Arc;
 
-fn generate_qr_code(text: &str) -> String {
-	let errcorlvl: QrCodeEcc = QrCodeEcc::Low;  // Error correction level
-	
-	// Make and print the QR Code symbol
+use qrcodegen::{QrCode, QrCodeEcc};
+use thiserror::Error;
+
+#[derive(Error, Debug)]
+pub enum QrError {
+    #[error("Error with message: `{error_text}`")]
+    ErrorMessage { error_text: String }
+}
+
+impl QrError {
+    pub fn message(msg: impl Into<String>) -> Self {
+        Self::ErrorMessage { error_text: msg.into() }
+    }
+}
+
+pub fn encode_text(text: &str, ecl: QrCodeEcc) -> Result<Arc<QrCode>, QrError> {
+	let qr_code = QrCode::encode_text(text, ecl);
+	match qr_code {
+		Ok(qr) => Ok(Arc::new(qr)),
+		Err(_) => Err(QrError::message("Error encoding text"))
+	}
+}
+
+pub fn generate_qr_code_svg(text: &str) -> String {
+	let errcorlvl: QrCodeEcc = QrCodeEcc::Low;
 	let qr: QrCode = QrCode::encode_text(text, errcorlvl).unwrap();
 	to_svg_string(&qr, 4)
 }
 
+// from https://github.com/nayuki/QR-Code-generator/blob/master/rust/examples/qrcodegen-demo.rs
 fn to_svg_string(qr: &QrCode, border: i32) -> String {
 	assert!(border >= 0, "Border must be non-negative");
 	let mut result = String::new();
@@ -33,18 +55,4 @@ fn to_svg_string(qr: &QrCode, border: i32) -> String {
 	result += "\" fill=\"#000000\"/>\n";
 	result += "</svg>\n";
 	result
-}
-
-
-// Prints the given QrCode object to the console.
-fn print_qr(qr: &QrCode) {
-	let border: i32 = 4;
-	for y in -border .. qr.size() + border {
-		for x in -border .. qr.size() + border {
-			let c: char = if qr.get_module(x, y) { '█' } else { ' ' };
-			print!("{0}{0}", c);
-		}
-		println!();
-	}
-	println!();
 }

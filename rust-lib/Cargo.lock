@@ -226,6 +226,7 @@ name = "rust-lib"
 version = "0.1.0"
 dependencies = [
  "qrcodegen",
+ "thiserror",
  "uniffi",
  "uniffi_bindgen",
  "uniffi_build",

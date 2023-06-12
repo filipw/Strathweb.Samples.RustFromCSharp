@@ -1,0 +1,3 @@
+{
+    "dotnet.defaultSolution": "csharp-host/csharp-host.sln"
+}

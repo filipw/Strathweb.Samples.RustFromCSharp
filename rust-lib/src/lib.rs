@@ -18,16 +18,14 @@ impl QrError {
 }
 
 pub fn encode_text(text: &str, ecl: QrCodeEcc) -> Result<Arc<QrCode>, QrError> {
-	let qr_code = QrCode::encode_text(text, ecl);
-	match qr_code {
-		Ok(qr) => Ok(Arc::new(qr)),
-		Err(_) => Err(QrError::message("Error encoding text"))
-	}
+	QrCode::encode_text(text, ecl)
+		.map(|qr| Arc::new(qr))
+		.map_err(|e| QrError::message(e.to_string()))
 }
 
 pub fn generate_qr_code_svg(text: &str) -> String {
-	let errcorlvl: QrCodeEcc = QrCodeEcc::Low;
-	let qr: QrCode = QrCode::encode_text(text, errcorlvl).unwrap();
+	let error_correction_level: QrCodeEcc = QrCodeEcc::Low;
+	let qr: QrCode = QrCode::encode_text(text, error_correction_level).unwrap();
 	to_svg_string(&qr, 4)
 }
 

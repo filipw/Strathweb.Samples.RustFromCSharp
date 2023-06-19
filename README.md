@@ -11,11 +11,24 @@
 ### Building
 
 ```
+build.sh
+```
+
+or 
+
+```
 cd rust-lib
 cargo build
 ```
 
 ```
 cd csharp-host
-dotnet run
+dotnet build
+```
+
+### Running
+
+```
+cd csharp-host
+dotnet build
 ```

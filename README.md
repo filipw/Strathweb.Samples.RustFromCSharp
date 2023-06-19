@@ -10,16 +10,20 @@
 
 ### Building
 
+Build everything
+
 ```
 build.sh
 ```
 
-or 
+or first build the Rust library manually 
 
 ```
 cd rust-lib
 cargo build
 ```
+
+followed by building the C# host
 
 ```
 cd csharp-host
@@ -27,6 +31,8 @@ dotnet build
 ```
 
 ### Running
+
+Now you can invoke the C# host, which calls into the Rust library
 
 ```
 cd csharp-host

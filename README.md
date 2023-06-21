@@ -36,5 +36,5 @@ Now you can invoke the C# host, which calls into the Rust library
 
 ```
 cd csharp-host
-dotnet build
+dotnet run
 ```

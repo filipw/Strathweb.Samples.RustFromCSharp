@@ -1,5 +1,7 @@
 # Example of invoking Rust code from C#
 
+Sample code for the blog post [Calling Rust code from C#](https://strathweb.com/2023/06/calling-rust-code-from-csharp/).
+
 ### Prerequisites
 
 1. Install [Rust](https://rustup.rs)
